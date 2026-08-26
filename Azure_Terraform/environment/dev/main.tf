@@ -1,3 +1,4 @@
+# This is my rg module
 module "dev-rg" {
   source         = "../../modules/resource_group"
   resource_group = var.resource_group
