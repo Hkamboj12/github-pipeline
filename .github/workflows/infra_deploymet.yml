@@ -1,3 +1,39 @@
 name: Azure Infra Deployment
 
-on: 
+on:
+     workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+
+    terraform:
+        runs-on: [self-hosted, linux]
+
+        steps: 
+
+          - name: Checkout repository
+            uses: actions/checkout@v4
+          
+          - name: Azure Login
+            uses: azure/login@v2
+            with:
+              client-id: b88c8cd3-0ad8-492f-bbbd-92461a094992
+              tenant-id: 68b57cef-8853-40ba-a5bf-74d983ad860c
+              subscription-id: c1b1d9d6-201f-4fc0-be46-2641cd9838df
+
+          - name: Terraform Init
+            working-directory: terraform
+            run: terraform init
+
+          - name: Terraform Plan
+            working-directory: terraform
+            run: terraform plan
+
+          - name: Terraform Apply
+            working-directory: terraform
+            run: terraform apply -auto-approve
+
+
